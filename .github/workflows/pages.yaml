@@ -1,0 +1,54 @@
+name: GH-Pages
+run-name: "Update GH-pages"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+env:
+  PLAYGROUND_REVISION: ${{ vars.PLAYGROUND_REVISION || '3da8d92aeab41d4aff3c0f65f821749a0f5e7a9a' }}
+
+jobs:
+  build:
+    name: "Generate pages site"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: project
+
+      - name: Checkout OpenSCAD playground
+        uses: actions/checkout@v4
+        with:
+          repository: openscad/openscad-playground
+          ref: ${{ env.PLAYGROUND_REVISION }}
+          path: openscad-playground
+
+      - name: Patch playground
+        run: patch <../project/ci/openscad-playground-00.patch -p 1
+        working-directory: openscad-playground
+
+      - name: Patch script into the playground
+        run: echo "export default \`$(awk -F '<|>' -e '/^include *<.*>;/{while(getline line <$2){print line}; next} {print}' box.scad)\`" > ../openscad-playground/src/state/default-scad.ts
+        working-directory: project
+
+      - name: Install npm dependencies
+        run: npm install
+        working-directory: openscad-playground
+
+      - name: Load resources
+        run: make src/wasm public/libraries/fonts.zip
+        working-directory: openscad-playground
+
+      - name: Build website
+        run: npm run build
+        working-directory: openscad-playground
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./openscad-playground/dist
+
