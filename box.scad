@@ -10,6 +10,8 @@ $fs = $preview ? preview_fs : render_fs;
 rendered_parts = "all"; // ["all", "body", "lid"]
 render_body = rendered_parts == "all" || rendered_parts == "body";
 render_lid = rendered_parts == "all" || rendered_parts == "lid";
+// Whether to show the cars in the slot in the preview (will be removed from the final render)
+render_preview_occupied_slots = false;
 
 /* [Printer] */
 // Dimensions of the filament - used to adapt tolerances.
@@ -259,6 +261,11 @@ module main() {
             box_lid();
             box_cutouts();
         };
+    }
+
+    // Fill slots with items
+    if ($preview && render_body && render_preview_occupied_slots) {
+        slots_layout(card_rows, card_cols, spacing = spacings, r_offset = row_offset, t_offset = slots_layout_offset);
     }
 }
 
