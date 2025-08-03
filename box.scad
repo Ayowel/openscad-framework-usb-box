@@ -29,7 +29,7 @@ rj45_slot_location = [0,0];
 // Whether the lid/body should have a border to keep the lid in place.
 has_lid_border = true;
 // Whether the lid should be hollow.
-has_empty_lid_volume = true;
+has_empty_lid_volume = false;
 // Whether the box should have holes all the way through.
 has_box_holes = false;
 // Whether the box should have notches to hold the lid - requires lid borders.
@@ -37,7 +37,7 @@ has_notches = true;
 // Whether the box should have a slot for a RJ45 adapter.
 has_rj45_slot = true;
 // Whether you should be able to stack the body on the lid once it is taken off.
-is_stackable_on_lid = false;
+is_stackable_on_lid = true;
 
 /* [Box] [Measurements] [Internal layout]*/
 // [horizontal, vertical] Space between the slots and the box's outside.
