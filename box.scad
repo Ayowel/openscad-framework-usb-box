@@ -32,6 +32,8 @@ has_lid_border = true;
 has_empty_lid_volume = false;
 // Whether the box should have holes all the way through.
 has_box_holes = false;
+// whether the hole should be centered on the height of the a or the effective height of the current line.
+box_hole_center_on = "slots"; // ["slots", "row_size"]
 // Whether the box should have notches to hold the lid - requires lid borders.
 has_notches = true;
 // Whether the box should have a slot for a RJ45 adapter.
@@ -234,7 +236,7 @@ module box_cutouts() {
         for(i = [box_holes_location[0]:box_holes_location[1]:card_rows-1-box_holes_location[2]]) {
             translate([
                 i%2 ? row_offset : box_dimensions[0] - row_offset,
-                i * (card_dimensions[1] + spacings[1]) + slots_layout_offset[1] + card_dimensions[1]/2 + (has_rj45_slot && i > rj45_slot_location[0] ? rj45_line_height_increase : 0),
+                i * (card_dimensions[1] + spacings[1]) + slots_layout_offset[1] + (box_hole_center_on == "slots" || !has_rj45_slot || i != rj45_slot_location[0] ? card_dimensions[1] : card_dimensions[1] + rj45_line_height_increase)/2 + (has_rj45_slot && i > rj45_slot_location[0] ? rj45_line_height_increase : 0),
                 -0.5
             ])
             cylinder(h = box_dimensions[2]+1, r = box_holes_size/2, center = false);
