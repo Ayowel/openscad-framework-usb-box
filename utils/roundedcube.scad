@@ -1,5 +1,5 @@
 // From https://gist.githubusercontent.com/groovenectar/92174cb1c98c1089347e/raw/c3024ba34f58831a2cf02952212d1ae236238de2/
-// More information: 
+// More information: https://danielupshaw.com/openscad-rounded-corners/
 
 module roundedcube(size = [1, 1, 1], center = false, radius = 0.5, apply_to = "all") {
 	// If single value, convert to [x, y, z] vector
