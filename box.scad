@@ -22,7 +22,24 @@ filament_size = 0.6; // [0.05:0.01:1]
 card_rows = 3; // [1:20]
 // Number of slot columns.
 card_cols = 2; // [1:20]
+// [row, column] Where the RJ45 slot should be located.
+rj45_slot_location = [0,0];
 
+/* [Box] [Design] */
+// Whether the lid/body should have a border to keep the lid in place.
+has_lid_border = true;
+// Whether the lid should be hollow.
+has_empty_lid_volume = true;
+// Whether the box should have holes all the way through.
+has_box_holes = false;
+// Whether the box should have notches to hold the lid - requires lid borders.
+has_notches = true;
+// Whether the box should have a slot for a RJ45 adapter.
+has_rj45_slot = true;
+// Whether you should be able to stack the body on the lid once it is taken off.
+is_stackable_on_lid = false;
+
+/* [Box] [Measurements] [Internal layout]*/
 // [horizontal, vertical] Space between the slots and the box's outside.
 inset = [5, 5]; // [0:0.1:100]
 // [horizontal, vertical] Space between each slot.
@@ -30,19 +47,10 @@ spacings = [5, 4]; // [0:0.1:100]
 // Initial offset for rows.
 row_offset = 8; // [0:0.1:100]
 
-/* [Box] [Design] */
-// Whether the lid/body should have a border to keep the lid in place.
-has_lid_border = true;
-// Whether the lid should be hollow.
-has_empty_lid_volume = true;
-// Whether the box should have holes all the way through
-has_box_holes = false;
-// Whether the box should have notches to hold the lid - requires lid borders.
-has_notches = true;
-// Whether you should be able to stack the body on the lid once it is taken off
-is_stackable_on_lid = false;
+// [start line, increment, end ignore] On which lines the holes should be placed.
+box_holes_location = [0, 1, 0];
 
-/* [Box] [Measurements] */
+/* [Box] [Measurements] [Shape]*/
 // Radius of the box's corners.
 box_radius = 4;
 // Proportion of the bottom part relative to the total box height.
@@ -57,19 +65,23 @@ lid_border_thickness = 1;
 // How high the lid's border should be.
 lid_border_height = 3;
 
-// Whether to create traversing holes in the box - placed in the row_offset.
-box_holes_size = 5;
-// [start line, increment, end ignore] On which lines the holes should be placed.
-box_holes_location = [0, 1, 0];
-
 // How high the lid's notchs should be.
 lid_notch_size = 0.5;
 // How wide the lid's notchs should be.
 lid_notch_width = 2;
 // How high the box's notchs' indents should be.
-box_notch_size = 1.2;
+box_notch_size = 1.;
 // How wide the box's notchs' indents should be.
 box_notch_width = 3;
+
+/* [Box] [Measurements] [Misc]*/
+// Size of the box's holes.
+box_holes_size = 5;
+
+// How much bigger than other lines the RJ45 slot's line should be.
+rj45_line_height_increase = 5;
+// Relative height of the RJ45 card when in the slot.
+rj45_slot_z_offset = 0;
 
 /* [Hardware] */
 // This is from the dimensions in https://github.com/FrameworkComputer/ExpansionCards/blob/main/Mechanical/OpenSCAD/ExpansionCard.scad
@@ -82,21 +94,67 @@ usbc_slot_bottom_length = 11;
 // Part of the card's length/width to use as a base for the usbc plug hole. Be carefull if you change this, the slot might be too small to accomodate the USB plug.
 usbc_slot_area_ratio = [0.8, 1.]; // [0.5:0.001:1]
 
+// The RJ45 section of the adapter.
+rj45_slot_section_big = [17, 13];
+// The RJ45 middle section of the adapter.
+rj45_slot_section_medium = [29, 8.5];
+// The RJ45 usb-c section of the adapter.
+rj45_slot_section_small = [3, 6];
+// The usb-c plug of the adapter - keep wider than the actual adapter to prevent snapping.
+rj45_slot_section_c = [8, 2.75];
+// The height of the RJ45 slot.
+rj45_slot_height = 30;
+
 /* [Hidden] */
+// The points that draw the shape of the RJ45 slot
+rj45_slot_shape = [
+    /*
+     * Shape sections
+     * 11--10
+     * |   9-------------8
+     * | B           SM  7-6
+     * | I   MEDIUM  ALL 4-5
+     * | G           2---3
+     * 0-------------1
+     */
+    [0,0],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + filament_size, 0],
+    // 2 - start small section
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + filament_size, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - filament_size],
+    // 4 - start usb-c section
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + filament_size],
+    // 8 - end usb-c section
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] + filament_size],
+    [rj45_slot_section_big[0] + filament_size, rj45_slot_section_medium[1] + filament_size],
+    [rj45_slot_section_big[0] + filament_size, rj45_slot_section_big[1] + filament_size],
+    [0, rj45_slot_section_big[1] + filament_size],
+];
+
 // If we do not add an arbitrary thickness, we might end up with 0-thick walls in the preview/final render.
 render_thickness_offset = $preview ? 0.01 : 0;
 
+// The actual dimensions of the card slots.
 card_dimensions = [card_dimensions_base[0]+filament_size, card_dimensions_base[1]+filament_size, card_dimensions_base[2]];
 
+// The dimension of the box.
 box_dimensions = [
     card_dimensions[0] * card_cols + spacings[0] * (card_cols - 1) + inset[0] * 2 + row_offset,
-    card_dimensions[1] * card_rows + spacings[1] * (card_rows - 1) + inset[1] * 2,
+    card_dimensions[1] * card_rows + spacings[1] * (card_rows - 1) + inset[1] * 2 + (has_rj45_slot && rj45_slot_location[0] < card_rows && rj45_slot_location[1] < card_cols?rj45_line_height_increase:0),
     card_dimensions[2] + usbc_slot_height + box_bottom_thickness + box_top_thickness + filament_size,
 ];
 
 slots_layout_offset = [inset[0], inset[1], box_bottom_thickness];
 
 include <utils/roundedcube.scad>;
+
+module rj45_card_slot(height = rj45_slot_height) {
+    linear_extrude(height)
+    polygon(rj45_slot_shape);
+}
 
 // A single slot's shape
 module simple_card_slot() {
@@ -115,11 +173,20 @@ module simple_card_slot() {
 module slots_layout(rows, cols, spacing = [5, 5], r_offset = 0, t_offset = slots_layout_offset) {
     translate(t_offset)
     for (i = [0:rows-1], j = [0:cols-1]) {
-        translate([
-            j * (card_dimensions[0] + spacing[0]) + (i%2) * r_offset,
-            i * (card_dimensions[1] + spacing[1]),
-            0,
-        ]) simple_card_slot();
+        if (!has_rj45_slot || i != rj45_slot_location[0] || (j != rj45_slot_location[1] && j - 1 != rj45_slot_location[1])) {
+            translate([
+                j * (card_dimensions[0] + spacing[0]) + (i%2) * r_offset,
+                i * (card_dimensions[1] + spacing[1]) + (has_rj45_slot && i >= rj45_slot_location[0] ? rj45_line_height_increase : 0)/(i == rj45_slot_location[0]?2:1),
+                0,
+            ]) simple_card_slot();
+        } else if (j == rj45_slot_location[1]) {
+            translate([
+                j * (card_dimensions[0] + spacing[0]) + (i%2) * r_offset,
+                i * (card_dimensions[1] + spacing[1]),
+                usbc_slot_height + filament_size + card_dimensions[2] - rj45_slot_height + rj45_slot_z_offset,
+            ])
+            rj45_card_slot(height = rj45_slot_height);
+        }
     }
 }
 
@@ -167,7 +234,7 @@ module box_cutouts() {
         for(i = [box_holes_location[0]:box_holes_location[1]:card_rows-1-box_holes_location[2]]) {
             translate([
                 i%2 ? row_offset : box_dimensions[0] - row_offset,
-                i * (card_dimensions[1] + spacings[1]) + slots_layout_offset[1] + card_dimensions[1]/2,
+                i * (card_dimensions[1] + spacings[1]) + slots_layout_offset[1] + card_dimensions[1]/2 + (has_rj45_slot && i > rj45_slot_location[0] ? rj45_line_height_increase : 0),
                 -0.5
             ])
             cylinder(h = box_dimensions[2]+1, r = box_holes_size/2, center = false);
