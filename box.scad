@@ -56,7 +56,7 @@ box_holes_location = [0, 1, 0];
 // Radius of the box's corners.
 box_radius = 4;
 // Proportion of the bottom part relative to the total box height.
-bottom_ratio = 0.65;
+bottom_ratio = 0.68; // [0:0.01:1]
 // How thick below the bottom of the slots the box should be.
 box_bottom_thickness = 3;
 // How thick above the top of the slots the box should be.
