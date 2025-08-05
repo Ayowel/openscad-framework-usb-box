@@ -23,7 +23,7 @@ card_rows = 3; // [1:20]
 // Number of slot columns.
 card_cols = 2; // [1:20]
 // [row, column] Where the RJ45 slot should be located.
-rj45_slot_location = [0,0];
+rj45_slot_location = [0,0]; // [0:1:100]
 
 /* [Box] [Design] */
 // Whether the lid/body should have a border to keep the lid in place.
@@ -97,13 +97,13 @@ usbc_slot_bottom_length = 11;
 usbc_slot_area_ratio = [0.8, 1.]; // [0.5:0.001:1]
 
 // The RJ45 section of the adapter.
-rj45_slot_section_big = [17, 13];
+rj45_slot_section_big = [17, 13]; // [1:0.01:50]
 // The RJ45 middle section of the adapter.
-rj45_slot_section_medium = [29, 8.5];
+rj45_slot_section_medium = [29, 8.5]; // [1:0.01:50]
 // The RJ45 usb-c section of the adapter.
-rj45_slot_section_small = [3, 6];
+rj45_slot_section_small = [3, 6]; // [1:0.01:50]
 // The usb-c plug of the adapter - keep wider than the actual adapter to prevent snapping.
-rj45_slot_section_c = [8, 2.75];
+rj45_slot_section_c = [8, 2.75]; // [1:0.01:50]
 // The height of the RJ45 slot.
 rj45_slot_height = 30;
 
