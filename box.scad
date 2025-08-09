@@ -88,7 +88,7 @@ rj45_slot_z_offset = 0;
 /* [Hardware] */
 // This is from the dimensions in https://github.com/FrameworkComputer/ExpansionCards/blob/main/Mechanical/OpenSCAD/ExpansionCard.scad
 // Dimensions of a single slot's body (not counting the usb-c port size).
-card_dimensions_base = [30., 6.8, 32.];
+card_dimensions_base = [30., 6.8, 32.]; // [1:0.01:50]
 // Height of the USB-C plug.
 usbc_slot_height = 7.5;
 // Length of the USB-C plug's base. This should be >= to 8 mm and <= to the usbc slot height * the usbc slot area ratio.
