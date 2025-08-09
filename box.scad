@@ -20,8 +20,8 @@ render_color_box_lid = "lightgreen"; // ["", "red", "green", "blue", "orange", "
 render_color_occupied_slots = ""; // ["", "red", "green", "blue", "orange", "yellow", "purple", "lightgreen", "lightblue"]
 
 /* [Print] */
-// Dimensions of the filament - used to adapt tolerances.
-filament_size = 0.6; // [0.05:0.01:1]
+// Clearances of the print - used to adapt slot sizes.
+clearance = 0.6; // [0.05:0.01:1]
 // Scale of the rendered item - If in doubt, set to 1
 render_scale = 1.; // [0.01:0.01:2]
 
@@ -67,7 +67,7 @@ box_radius = 4;
 bottom_ratio = 0.68; // [0:0.01:1]
 // How thick below the bottom of the slots the box should be.
 box_bottom_thickness = 3;
-// How thick above the top of the slots the box should be.
+// How thick the lid of the box should be - reduced by clearance.
 box_top_thickness = 2;
 
 // How thick the lid's border should be.
@@ -128,33 +128,33 @@ rj45_slot_shape = [
      * 0-------------1
      */
     [0,0],
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + filament_size, 0],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + clearance, 0],
     // 2 - start small section
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + filament_size, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - filament_size],
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + clearance, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - clearance],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + clearance, rj45_slot_section_medium[1] - rj45_slot_section_small[1] - clearance],
     // 4 - start usb-c section
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - filament_size],
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - filament_size],
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + filament_size],
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + clearance, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - clearance],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + clearance, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] + rj45_slot_section_c[1])/2 - clearance],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + rj45_slot_section_c[0] + clearance, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + clearance],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + clearance, rj45_slot_section_medium[1] - (rj45_slot_section_small[1] - rj45_slot_section_c[1])/2 + clearance],
     // 8 - end usb-c section
-    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + filament_size, rj45_slot_section_medium[1] + filament_size],
-    [rj45_slot_section_big[0] + filament_size, rj45_slot_section_medium[1] + filament_size],
-    [rj45_slot_section_big[0] + filament_size, rj45_slot_section_big[1] + filament_size],
-    [0, rj45_slot_section_big[1] + filament_size],
+    [rj45_slot_section_big[0] + rj45_slot_section_medium[0] + rj45_slot_section_small[0] + clearance, rj45_slot_section_medium[1] + clearance],
+    [rj45_slot_section_big[0] + clearance, rj45_slot_section_medium[1] + clearance],
+    [rj45_slot_section_big[0] + clearance, rj45_slot_section_big[1] + clearance],
+    [0, rj45_slot_section_big[1] + clearance],
 ];
 
 // If we do not add an arbitrary thickness, we might end up with 0-thick walls in the preview/final render.
 render_thickness_offset = $preview ? 0.01 : 0;
 
 // The actual dimensions of the card slots.
-card_dimensions = [card_dimensions_base[0]+filament_size, card_dimensions_base[1]+filament_size, card_dimensions_base[2]];
+card_dimensions = [card_dimensions_base[0]+clearance, card_dimensions_base[1]+clearance, card_dimensions_base[2]];
 
 // The dimension of the box.
 box_dimensions = [
-    card_dimensions[0] * card_cols + spacings[0] * (card_cols - 1) + inset[0] * 2 + row_offset,
-    card_dimensions[1] * card_rows + spacings[1] * (card_rows - 1) + inset[1] * 2 + (has_rj45_slot && rj45_slot_location[0] < card_rows && rj45_slot_location[1] < card_cols?rj45_line_height_increase:0),
-    card_dimensions[2] + usbc_slot_height + box_bottom_thickness + box_top_thickness + filament_size,
+    card_dimensions_base[0] * card_cols + spacings[0] * (card_cols - 1) + inset[0] * 2 + row_offset,
+    card_dimensions_base[1] * card_rows + spacings[1] * (card_rows - 1) + inset[1] * 2 + (has_rj45_slot && rj45_slot_location[0] < card_rows && rj45_slot_location[1] < card_cols?rj45_line_height_increase:0),
+    card_dimensions_base[2] + usbc_slot_height + box_bottom_thickness + box_top_thickness,
 ];
 
 slots_layout_offset = [inset[0], inset[1], box_bottom_thickness];
@@ -175,7 +175,7 @@ module simple_card_slot() {
         cube(card_dimensions, center = true);
         // Free-up space for the usb plug
         scale([1., card_dimensions[1] * usbc_slot_area_ratio[1] / card_dimensions[0] / usbc_slot_area_ratio[0], 1.])
-        cylinder(usbc_slot_height + filament_size + render_thickness_offset, usbc_slot_bottom_length/2, card_dimensions[0]*usbc_slot_area_ratio[0]/2);
+        cylinder(usbc_slot_height + clearance + render_thickness_offset, usbc_slot_bottom_length/2, card_dimensions[0]*usbc_slot_area_ratio[0]/2);
     }
 };
 
@@ -185,15 +185,15 @@ module slots_layout(rows, cols, spacing = [5, 5], r_offset = 0, t_offset = slots
     for (i = [0:rows-1], j = [0:cols-1]) {
         if (!has_rj45_slot || i != rj45_slot_location[0] || (j != rj45_slot_location[1] && j - 1 != rj45_slot_location[1])) {
             translate([
-                j * (card_dimensions[0] + spacing[0]) + (i%2) * r_offset,
-                i * (card_dimensions[1] + spacing[1]) + (has_rj45_slot && i >= rj45_slot_location[0] ? rj45_line_height_increase : 0)/(i == rj45_slot_location[0]?2:1),
+                j * (card_dimensions_base[0] + spacing[0]) + (i%2) * r_offset - clearance/2,
+                i * (card_dimensions_base[1] + spacing[1]) + (has_rj45_slot && i >= rj45_slot_location[0] ? rj45_line_height_increase : 0)/(i == rj45_slot_location[0]?2:1) - clearance/2,
                 0,
             ]) simple_card_slot();
         } else if (j == rj45_slot_location[1]) {
             translate([
-                j * (card_dimensions[0] + spacing[0]) + (i%2) * r_offset,
-                i * (card_dimensions[1] + spacing[1]),
-                usbc_slot_height + filament_size + card_dimensions[2] - rj45_slot_height + rj45_slot_z_offset,
+                j * (card_dimensions_base[0] + spacing[0]) + (i%2) * r_offset - clearance/2,
+                i * (card_dimensions_base[1] + spacing[1]) - clearance/2,
+                usbc_slot_height + card_dimensions_base[2] - rj45_slot_height + rj45_slot_z_offset,
             ])
             rj45_card_slot(height = rj45_slot_height);
         }
@@ -222,19 +222,19 @@ module notch_row(width = 10, size = 5, count = 3, spacing = 20) {
 module box_notches(width = 10, size = 5) {
     // Front row
     translate([
-        inset[0] + card_dimensions[0]/2 + row_offset/2/card_cols,
+        inset[0] + card_dimensions_base[0]/2 + row_offset/2/card_cols,
         lid_border_thickness,
         box_dimensions[2]*bottom_ratio - lid_border_height/2
     ])
-    notch_row(width, size, count = card_cols, spacing = spacings[0] + card_dimensions[0] + row_offset / card_cols);
+    notch_row(width, size, count = card_cols, spacing = spacings[0] + card_dimensions_base[0] + row_offset / card_cols);
     // Back row
     translate([
-        box_dimensions[0] - (inset[0] + card_dimensions[0]/2 + row_offset/2/card_cols),
+        box_dimensions[0] - (inset[0] + card_dimensions_base[0]/2 + row_offset/2/card_cols),
         box_dimensions[1] - lid_border_thickness,
         box_dimensions[2]*bottom_ratio - lid_border_height/2
     ])
     rotate([0,0,180])
-    notch_row(width, size, count = card_cols, spacing = spacings[0] + card_dimensions[0] + row_offset / card_cols);
+    notch_row(width, size, count = card_cols, spacing = spacings[0] + card_dimensions_base[0] + row_offset / card_cols);
 }
 
 module box_cutouts() {
@@ -263,7 +263,7 @@ module box_lid() {
         box();
         // Empty internal area
         if (has_empty_lid_volume) {
-            translate([box_top_thickness, box_top_thickness, box_top_thickness])
+            translate([box_top_thickness, box_top_thickness, box_top_thickness + clearance])
             scale([1-box_top_thickness/box_dimensions[0]*2, 1-box_top_thickness/box_dimensions[1]*2, 1-box_top_thickness/box_dimensions[2]*2])
             box();
         }
