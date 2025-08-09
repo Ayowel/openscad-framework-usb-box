@@ -58,7 +58,7 @@ spacings = [5, 4]; // [0:0.1:100]
 row_offset = 8; // [0:0.1:100]
 
 // [start line, increment, end ignore] On which lines the holes should be placed.
-box_holes_location = [0, 1, 0];
+box_holes_location = [0, 1, 0]; // [0:20]
 
 /* [Box] [Measurements] [Shape]*/
 // Radius of the box's corners.
