@@ -19,9 +19,11 @@ render_color_box_lid = "lightgreen"; // ["", "red", "green", "blue", "orange", "
 // Render color for the slot items
 render_color_occupied_slots = ""; // ["", "red", "green", "blue", "orange", "yellow", "purple", "lightgreen", "lightblue"]
 
-/* [Printer] */
+/* [Print] */
 // Dimensions of the filament - used to adapt tolerances.
 filament_size = 0.6; // [0.05:0.01:1]
+// Scale of the rendered item - If in doubt, set to 1
+render_scale = 1.; // [0.01:0.01:2]
 
 /* [Box] [Layout] */
 // Number of slot rows.
@@ -350,4 +352,4 @@ module main() {
     }
 }
 
-main();
+scale(render_scale) main();
