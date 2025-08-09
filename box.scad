@@ -12,6 +12,12 @@ render_body = rendered_parts == "all" || rendered_parts == "body";
 render_lid = rendered_parts == "all" || rendered_parts == "lid";
 // Whether to show the cars in the slot in the preview (will be removed from the final render)
 render_preview_occupied_slots = false;
+// Render color for the box's body
+render_color_box_body = "green"; // ["", "red", "green", "blue", "orange", "yellow", "purple", "lightgreen", "lightblue"]
+// Render color for the box's lid
+render_color_box_lid = "lightgreen"; // ["", "red", "green", "blue", "orange", "yellow", "purple", "lightgreen", "lightblue"]
+// Render color for the slot items
+render_color_occupied_slots = ""; // ["", "red", "green", "blue", "orange", "yellow", "purple", "lightgreen", "lightblue"]
 
 /* [Printer] */
 // Dimensions of the filament - used to adapt tolerances.
@@ -316,25 +322,31 @@ module box_body() {
 module main() {
     // Box body
     if (render_body) {
-        difference() {
-            box_body();
-            box_cutouts();
-        };
+        color(render_color_box_body?render_color_box_body:undef) {
+            difference() {
+                box_body();
+                box_cutouts();
+            };
+        }
     }
 
     // Box lid
     if (render_lid) {
-        translate([0, box_dimensions[1] + (render_body?box_dimensions[1]+10:0), box_dimensions[2]])
-        rotate([0, 180, 180])
-        difference() {
-            box_lid();
-            box_cutouts();
-        };
+        color(render_color_box_lid?render_color_box_lid:undef) {
+            translate([0, box_dimensions[1] + (render_body?box_dimensions[1]+10:0), box_dimensions[2]])
+            rotate([0, 180, 180])
+            difference() {
+                box_lid();
+                box_cutouts();
+            };
+        }
     }
 
     // Fill slots with items
     if ($preview && render_body && render_preview_occupied_slots) {
-        slots_layout(card_rows, card_cols, spacing = spacings, r_offset = row_offset, t_offset = slots_layout_offset);
+        color(render_color_occupied_slots?render_color_occupied_slots:undef) {
+            slots_layout(card_rows, card_cols, spacing = spacings, r_offset = row_offset, t_offset = slots_layout_offset);
+        }
     }
 }
 
