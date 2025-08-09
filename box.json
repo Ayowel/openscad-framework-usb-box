@@ -1,0 +1,35 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "box_1_1": {
+            "card_cols": "1",
+            "card_rows": "1",
+            "has_box_holes": "false",
+            "has_rj45_slot": "false",
+            "row_offset": "0"
+        },
+        "box_1_2_RJ45-0-0_holes": {
+            "box_hole_center_on": "row_size",
+            "card_cols": "2",
+            "card_rows": "1",
+            "has_box_holes": "true",
+            "has_rj45_slot": "true",
+            "rj45_slot_location": "[0, 0]",
+            "spacings": "[0, 0]"
+        },
+        "box_3_2_holes": {
+            "card_cols": "2",
+            "card_rows": "3",
+            "has_box_holes": "true",
+            "has_rj45_slot": "false"
+        },
+        "box_5_2_RJ45-2-0_holes": {
+            "box_hole_center_on": "row_size",
+            "card_cols": "2",
+            "card_rows": "5",
+            "has_box_holes": "true",
+            "has_rj45_slot": "true",
+            "rj45_slot_location": "[2, 0]"
+        }
+    }
+}
